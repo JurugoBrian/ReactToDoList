@@ -7,11 +7,24 @@ import { nanoid } from "nanoid";
 
 function App(props) {
 
-  const [tasks, setTasks] = useState(props.tasks)
+  const [tasks, setTasks] = useState(props.tasks);
 
   function addTask(name){
-    const newTask = { id: "todo-" + nanoid(), name: name, completed: false };
+    const newTask = { id: "todo-" + nanoid(), name: name, completed: false };;
     setTasks([...tasks, newTask]);
+  }
+
+  function toggleTaskCompleted(id) {
+    const updatedTasks = tasks.map(task => {
+      // if this task has the same ID as the edited tasks
+      if (id === task.id){
+        // use object spread to make a new object
+        // whose completed prop has been inverted
+        return {...task, completed: !task.completed}
+      }
+      return task;
+    });
+    setTasks(updatedTasks);
   }
 
   const taskList = tasks.map(task => (
@@ -20,6 +33,7 @@ function App(props) {
       name={task.name}
       completed={task.completed}
       key={task.id}
+      toggleTaskCompleted={toggleTaskCompleted}
       />
     )
   );
